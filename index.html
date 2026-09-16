@@ -1,0 +1,504 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Minha Lista de Tarefas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #0d1b2a;
+            color: white;
+
+            padding: 20px;
+        }
+
+        /* Caixa principal */
+        .container {
+            width: 90%;
+            max-width: 500px;
+
+            background: #182c3d;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            border: 2px solid #6d1636;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Título */
+        h1 {
+            text-align: center;
+
+            margin-bottom: 25px;
+
+            color: #ffffff;
+
+            text-shadow:
+                0 0 10px rgba(37, 150, 243, 0.3);
+        }
+
+        /* Área de adicionar */
+        .adicionar {
+            display: flex;
+            gap: 10px;
+        }
+
+        #tarefaInput {
+            flex: 1;
+
+            padding: 12px;
+
+            border: 2px solid #2563eb;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 16px;
+
+            background: #0f2233;
+
+            color: white;
+        }
+
+        #tarefaInput::placeholder {
+            color: #9ca3af;
+        }
+
+        #tarefaInput:focus {
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 8px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Botão adicionar */
+        #btnAdicionar {
+            padding: 12px 18px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #6d1636;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        #btnAdicionar:hover {
+            background: #8b1e4d;
+
+            transform: translateY(-2px);
+        }
+
+        /* Lista */
+        ul {
+            list-style: none;
+
+            margin-top: 25px;
+        }
+
+        li {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background: #243b53;
+
+            padding: 12px;
+
+            margin-bottom: 10px;
+
+            border-radius: 8px;
+
+            gap: 10px;
+
+            border-left: 4px solid #2563eb;
+
+            transition: 0.3s;
+        }
+
+        li:hover {
+            border-left-color: #8b1e4d;
+        }
+
+        li span {
+            flex: 1;
+
+            word-break: break-word;
+        }
+
+        /* Tarefa concluída */
+        li.concluida span {
+            text-decoration: line-through;
+
+            opacity: 0.5;
+        }
+
+        /* Botões */
+        .botoes {
+            display: flex;
+
+            gap: 5px;
+        }
+
+        .concluir,
+        .excluir {
+            border: none;
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 6px;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        /* Botão concluir - azul */
+        .concluir {
+            background: #2563eb;
+        }
+
+        .concluir:hover {
+            background: #1d4ed8;
+
+            transform: scale(1.08);
+        }
+
+        /* Botão excluir - vinho */
+        .excluir {
+            background: #7f1d3d;
+        }
+
+        .excluir:hover {
+            background: #a51d4d;
+
+            transform: scale(1.08);
+        }
+
+        /* =========================
+           RODAPÉ
+        ========================== */
+
+        footer {
+            margin-top: 25px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #31516d;
+
+            text-align: center;
+
+            color: #aebdcc;
+
+            font-size: 14px;
+        }
+
+        .instagram {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 8px;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        /* Ícone do Instagram */
+        .instagram svg {
+            width: 22px;
+            height: 22px;
+
+            fill: none;
+
+            stroke: #e1306c;
+
+            stroke-width: 2;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+
+            transition: 0.3s;
+        }
+
+        .instagram:hover {
+            color: #60a5fa;
+        }
+
+        .instagram:hover svg {
+            stroke: #60a5fa;
+
+            transform: scale(1.1);
+        }
+
+        /* Responsividade */
+        @media (max-width: 500px) {
+
+            .adicionar {
+                flex-direction: column;
+            }
+
+            #btnAdicionar {
+                width: 100%;
+            }
+
+            .container {
+                padding: 22px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📝 Minha Lista de Tarefas</h1>
+
+        <div class="adicionar">
+
+            <input
+                type="text"
+                id="tarefaInput"
+                placeholder="Digite uma tarefa..."
+            >
+
+            <button id="btnAdicionar">
+                Adicionar
+            </button>
+
+        </div>
+
+        <ul id="listaTarefas"></ul>
+
+
+        <!-- RODAPÉ -->
+        <footer>
+
+            <p>Minhas redes sociais</p>
+
+            <a
+                href="https://www.instagram.com/isahh.santosx"
+                target="_blank"
+                class="instagram"
+            >
+
+                <!-- Ícone Instagram -->
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="5"
+                        ry="5"
+                    ></rect>
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="4"
+                    ></circle>
+
+                    <circle
+                        cx="17.5"
+                        cy="6.5"
+                        r="1"
+                        fill="#e1306c"
+                        stroke="none"
+                    ></circle>
+                </svg>
+
+                @isahh.santosx
+
+            </a>
+
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        const tarefaInput =
+            document.getElementById("tarefaInput");
+
+        const btnAdicionar =
+            document.getElementById("btnAdicionar");
+
+        const listaTarefas =
+            document.getElementById("listaTarefas");
+
+
+        function adicionarTarefa() {
+
+            const texto =
+                tarefaInput.value.trim();
+
+
+            if (texto === "") {
+
+                alert("Digite uma tarefa!");
+
+                return;
+            }
+
+
+            const li =
+                document.createElement("li");
+
+
+            const span =
+                document.createElement("span");
+
+            span.textContent = texto;
+
+
+            const botoes =
+                document.createElement("div");
+
+            botoes.classList.add("botoes");
+
+
+            /* Botão concluir */
+
+            const btnConcluir =
+                document.createElement("button");
+
+            btnConcluir.textContent = "✓";
+
+            btnConcluir.classList.add("concluir");
+
+
+            btnConcluir.addEventListener(
+                "click",
+                function() {
+
+                    li.classList.toggle("concluida");
+
+                }
+            );
+
+
+            /* Botão excluir */
+
+            const btnExcluir =
+                document.createElement("button");
+
+            btnExcluir.textContent = "✕";
+
+            btnExcluir.classList.add("excluir");
+
+
+            btnExcluir.addEventListener(
+                "click",
+                function() {
+
+                    li.remove();
+
+                }
+            );
+
+
+            botoes.appendChild(btnConcluir);
+
+            botoes.appendChild(btnExcluir);
+
+
+            li.appendChild(span);
+
+            li.appendChild(botoes);
+
+
+            listaTarefas.appendChild(li);
+
+
+            tarefaInput.value = "";
+
+            tarefaInput.focus();
+        }
+
+
+        /* Botão adicionar */
+
+        btnAdicionar.addEventListener(
+            "click",
+            adicionarTarefa
+        );
+
+
+        /* Tecla Enter */
+
+        tarefaInput.addEventListener(
+            "keypress",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    adicionarTarefa();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
+```
